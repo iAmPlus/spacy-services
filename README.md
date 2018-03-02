@@ -4,6 +4,18 @@
 
 This repository provides REST microservices for Explosion AI's [interactive demos](https://demos.explosion.ai) and visualisers. All requests and responses are JSON-encoded as `text/string`, so all requests require the header `Content-Type: text/string`.
 
+# TODO: TOKENIZATION
+
+This was "out of scope" for my last weeks with the company but the spaCy server needs to incorporate tokenizer config
+
+## current state
+
+Right now, the tokenizer for the NLU is instantiated and maintained by the app_manager singleton. This means it's tightly bound to the NLU and called from the shared context on spaCy model instantiation. Splitting spaCy out requires we migrate from this strategy
+
+## proposed state
+
+The spaCy server should be flexible enough to provide tokenization as requested by the user. This means it should cache configured tokenizers, with the configuration object itself serving as the key for cache retrieval. Calls to the spaCy service must include a tokenizer config so that the configured tokenizer can be retrieved from the cache or instantiated. The spaCy server may optionally take a default tokenizer config on instantiation so that requests without a tokenizer config can be served.
+
 # Docker Packaging
 
 This fork provides a Dockerfile that brings up a displaCy server (as documented below) using spaCy 1.9.0. To build and run locally,
