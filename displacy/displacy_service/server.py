@@ -6,6 +6,7 @@ from pathlib import Path
 import falcon
 import spacy
 import json
+from nlu_extensions.tokenizer import tokenize
 
 from spacy.symbols import ENT_TYPE, TAG, DEP
 
@@ -33,7 +34,11 @@ _models = {}
 
 def get_model(model_name):
     if model_name not in _models:
-        _models[model_name] = spacy.load(model_name)
+        model = spacy.load(model_name)
+        old_tokenizer = model.tokenizer
+        model.tokenizer = lambda text: \
+            old_tokenizer.tokens_from_list(tokenize(text))
+        _models[model_name] = model
     return _models[model_name]
 
 

@@ -1,3 +1,4 @@
+-e git+https://49d7c5d70881d9c71dccc49fe57a83b5f75c6d8f@github.com/iamplus/nlu_extensions.git@v0.1.0#egg=nlu_extensions
 falcon
 spacy==1.9.0
 pytest
